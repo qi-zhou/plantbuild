@@ -2,7 +2,7 @@
 
 a command line tool to test, build, push docker images, write kubernetes configurations and deploy to kubernetes cluster. it heavily uses the fantastic [Jsonnet programming language](https://jsonnet.org)
 
-It utilize a docker image published at `theplant/plantbuild:latest`, This docker image includes:
+It utilize a docker image published at `zhouqi/plantbuild:latest`, This docker image includes:
 
 - The jsonnet binary to execute jsonnet files to generate json output
 - The image building, testing docker-compose and deploying kubernetes jsonnet template functions
@@ -10,7 +10,7 @@ It utilize a docker image published at `theplant/plantbuild:latest`, This docker
 ## Install plantbuild command
 
 ```
-sudo curl -fsSL https://raw.githubusercontent.com/theplant/plantbuild/master/plantbuild > /usr/local/bin/plantbuild && sudo chmod +x /usr/local/bin/plantbuild
+sudo curl -fsSL https://raw.githubusercontent.com/qi-zhou/plantbuild/master/plantbuild > /usr/local/bin/plantbuild && sudo chmod +x /usr/local/bin/plantbuild
 ```
 
 ## Command Manual
