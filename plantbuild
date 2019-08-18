@@ -135,7 +135,6 @@ case $subcommand in
             meta=$(show $githash7 $filename | jq ".metadata")
             namespace=$(echo $meta | jq -r ".namespace")
             configmap=$(echo $meta | jq -r ".name")
-
             patchscript='local k8s = import "k8s.jsonnet"; k8s.patch_deployment_env("'$configmap'")'
             resourceName=$(echo $meta | jq -r ".labels.deployment")
             k8sresource='deployment'
@@ -153,7 +152,10 @@ case $subcommand in
 
             patch=$(echo $patchscript | show $githash7 '-')
             echo "patching with: ""$patch"
-            _k "-n $namespace patch $k8sresource/$resourceName --record --type=json -p \"$(echo $patch)\""
+            for rn in $resourceName
+            do
+                _k "-n $namespace patch $k8sresource/$rn --record --type=json -p \"$(echo $patch)\""
+            done
         fi
         ;;
     k8s_apply)
