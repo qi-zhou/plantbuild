@@ -4,7 +4,7 @@ assert std.length(v) > 0 : 'version is empty';
 {
   version: v,
   dockerRegistry: 'registry.example.com',
-  imagePullSecrets: 'theplant-registry-secrets',
+  imagePullSecrets: 'registry-secrets',
   defaultNamespace: 'default',
   port: 4000,
   baseHost: '',
