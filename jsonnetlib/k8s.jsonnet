@@ -430,26 +430,7 @@ cfg {
     local labels = { app: name },
     local probe = if withoutProbe then {}
     else if std.objectHas(probes, 'livenessProbe') || std.objectHas(probes, 'readinessProbe') then probes
-    else {
-      livenessProbe: {
-        tcpSocket: {
-          port: port,
-        },
-        failureThreshold: 3,
-        initialDelaySeconds: 360,
-        periodSeconds: 10,
-        successThreshold: 1,
-      },
-      readinessProbe: {
-        tcpSocket: {
-          port: port,
-        },
-        failureThreshold: 80,
-        initialDelaySeconds: 5,
-        periodSeconds: 5,
-        successThreshold: 1,
-      },
-    },
+    else {},
     local vols = if std.length(volumes) > 0 then
       {
         volumes: volumes,
