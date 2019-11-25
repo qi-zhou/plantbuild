@@ -280,6 +280,7 @@ cfg {
     port=root.port,
     probes={},
     targetPort=root.port,
+    protocolType=root.defaultProtocolType,
     neverColocated=false,
     memoryRequest=root.memoryRequest,
     cpuRequest=root.cpuRequest,
@@ -294,6 +295,8 @@ cfg {
     minReplicas=3,
     targetCPUUtilizationPercentage=75,
     podSpec=root.podSpec,
+    podAnnotations=root.defaultPodAnnotations,
+    annotations={},
   ):: {
     apiVersion: 'v1',
     kind: 'List',
@@ -317,8 +320,9 @@ cfg {
         container=container,
         volumes=volumes,
         podSpec=podSpec,
+        podAnnotations=podAnnotations,
       ),
-      root.svc(namespace, name, port, targetPort),
+      root.svc(namespace, name, port, targetPort, annotations, protocolType),
       root.single_svc_ingress(
         namespace=namespace,
         name=name,
@@ -335,7 +339,7 @@ cfg {
     ] else [],
   },
 
-  svc(namespace=root.defaultNamespace, name, port=root.port, targetPort=root.port, annotations={}):: {
+  svc(namespace=root.defaultNamespace, name, port=root.port, targetPort=root.port, annotations={}, protocolType=root.defaultProtocolType,):: {
     apiVersion: 'v1',
     kind: 'Service',
     metadata: {
@@ -350,7 +354,7 @@ cfg {
       type: 'ClusterIP',
       ports: [
         {
-          name: 'app',
+          name: protocolType,
           port: port,
           targetPort: targetPort,
         },
@@ -426,6 +430,7 @@ cfg {
     container={},
     volumes=[],
     podSpec=root.podSpec,
+    podAnnotations=root.defaultPodAnnotations,
   ):: {
     local labels = { app: name },
     local probe = if withoutProbe then {}
@@ -480,6 +485,7 @@ cfg {
       template: {
         metadata: {
           labels: labels,
+          annotations: podAnnotations,
         },
         spec: {
           containers: [

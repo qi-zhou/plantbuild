@@ -19,6 +19,8 @@ assert std.length(v) > 0 : 'version is empty';
   successfulJobsHistoryLimit: 1,
   projectRoot: '/go/src/github.com',
   podSpec: {},
+  defaultProtocolType: 'http',
+  defaultPodAnnotations: {'sidecar.istio.io/inject': 'false',},
 
   // config helper func
   local root = self,
