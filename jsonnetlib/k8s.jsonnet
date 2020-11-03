@@ -287,6 +287,7 @@ cfg {
     memoryLimit=root.memoryLimit,
     cpuLimit=root.cpuLimit,
     maxSurge=root.maxSurge,
+    strategy=root.strategy,
     ingressAnnotations={},
     envmap={},
     container={},
@@ -316,6 +317,7 @@ cfg {
         memoryLimit=memoryLimit,
         cpuLimit=cpuLimit,
         maxSurge=maxSurge,
+        strategy=strategy,
         envmap=envmap,
         container=container,
         volumes=volumes,
@@ -427,6 +429,7 @@ cfg {
     memoryLimit=root.memoryLimit,
     cpuLimit=root.cpuLimit,
     maxSurge=root.maxSurge,
+    strategy=root.strategy,
     container={},
     volumes=[],
     podSpec=root.podSpec,
@@ -466,6 +469,15 @@ cfg {
         },
       },
     },
+    local myStrategy = if strategy == 'RollingUpdate' then {
+      rollingUpdate: {
+        maxSurge: maxSurge,
+        maxUnavailable: 0,
+      },
+      type: strategy,
+    } else {
+      type: strategy,
+    },
     apiVersion: 'extensions/v1beta1',
     kind: 'Deployment',
     metadata: {
@@ -475,13 +487,7 @@ cfg {
     },
     spec: {
       replicas: replicas,
-      strategy: {
-        rollingUpdate: {
-          maxSurge: maxSurge,
-          maxUnavailable: 0,
-        },
-        type: 'RollingUpdate',
-      },
+      strategy: myStrategy,
       template: {
         metadata: {
           labels: labels,
